@@ -1,0 +1,12 @@
+{
+  "name": "@sechat/server",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {},
+  "keywords": [],
+  "author": "Fachri Hawari<fachri.hawari@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "^4.6.1"
+  }
+}
