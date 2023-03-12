@@ -11,7 +11,7 @@ const io = new Server(httpServer, {
     ]
   }
 });
-httpServer.listen(3000);
+httpServer.listen(process.env.PORT || 3000);
 
 io.use((socket, next) => {
   const username = socket.handshake.auth.username;
