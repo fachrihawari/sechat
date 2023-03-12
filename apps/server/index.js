@@ -13,17 +13,44 @@ const io = new Server(httpServer, {
 });
 httpServer.listen(3000);
 
-let activeUsers = []
+io.use((socket, next) => {
+  const username = socket.handshake.auth.username;
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
+  socket.username = username;
+  next();
+});
 
 io.on("connection", (socket) => {
-  activeUsers.push(socket.id)
+  updateUsers()
 
-  // Send new active ids
-  io.emit("active-ids", activeUsers)
+  socket.on("private-message", ({ content, to }) => {
+    console.log("private-message", { content, to })
+    socket.to(to).emit("private-message", {
+      content,
+      from: socket.id,
+    });
+  });
 
   socket.on("disconnecting", () => {
-    console.log(socket.id, " disconnected"); // the Set contains at least the socket ID
-    // Delete id from active users
-    activeUsers = activeUsers.filter(id => id !== socket.id)
+    socket.broadcast.emit("user-disconnected", socket.id)
+  })
+
+  socket.on("disconnect", () => {
+    updateUsers()
   });
 });
+
+
+function updateUsers() {
+  let users = []
+  for (let [id, socketItem] of io.of("/").sockets) {
+    users.push({
+      id,
+      username: socketItem.username,
+    });
+  }
+  // Send new online ids
+  io.emit("users", users)
+}
