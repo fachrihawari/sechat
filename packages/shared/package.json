@@ -2,9 +2,5 @@
   "name": "@sechat/shared",
   "private": true,
   "version": "0.0.1",
-  "scripts": {},
-  "keywords": [],
-  "author": "Fachri Hawari<fachri.hawari@gmail.com>",
-  "license": "MIT",
-  "dependencies": {}
+  "description": "Shared code for server & client"
 }

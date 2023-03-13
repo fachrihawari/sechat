@@ -1,0 +1,26 @@
+{
+  "name": "sechat",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Realtime chat with React & Socket.io",
+  "workspaces": [
+    "apps/server",
+    "apps/client",
+    "packages/shared"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fachrihawari/sechat.git"
+  },
+  "keywords": [
+    "socket.io",
+    "realtime",
+    "chat"
+  ],
+  "author": "Fachri Hawari<fachri.hawari@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fachrihawari/sechat/issues"
+  },
+  "homepage": "https://github.com/fachrihawari/sechat#readme"
+}
