@@ -1,6 +1,8 @@
 {
   "name": "@sechat/shared",
   "private": true,
+  "type": "module",
   "version": "0.0.1",
-  "description": "Shared code for server & client"
+  "description": "Shared code for server & client",
+  "main": "index.js"
 }

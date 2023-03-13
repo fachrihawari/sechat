@@ -1,14 +1,18 @@
+import { socketEvents } from '@sechat/shared'
+
+const { CHAT_NEW_MESSAGE } = socketEvents
+
 function chatHandler({ socket }) {
   // List of handlers
   function newMessage({ content, to }) {
-    console.log("chat:new-message", { content, to });
-    socket.to(to).emit("chat:new-message", {
+    console.log(CHAT_NEW_MESSAGE, { content, to });
+    socket.to(to).emit(CHAT_NEW_MESSAGE, {
       content,
       from: socket.id,
     });
   }
 
-  socket.on('chat:new-message', newMessage)
+  socket.on(CHAT_NEW_MESSAGE, newMessage)
 }
 
 export default chatHandler

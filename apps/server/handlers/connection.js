@@ -1,3 +1,7 @@
+import { socketEvents } from '@sechat/shared'
+
+const { DISCONNECTING, DISCONNECT, USER_DISCONNECTED, USER_LIST } = socketEvents
+
 function connectionHandler({ io, socket }) {
   // Update user list
   function updateUsers() {
@@ -9,7 +13,7 @@ function connectionHandler({ io, socket }) {
       });
     }
     // Send new online ids
-    io.emit("users", users)
+    io.emit(USER_LIST, users)
   }
 
 
@@ -18,11 +22,11 @@ function connectionHandler({ io, socket }) {
 
   // List of handlers
   function disconnecting() {
-    socket.broadcast.emit("connection:user-disconnected", socket.id)
+    socket.broadcast.emit(USER_DISCONNECTED, socket.id)
   }
 
-  socket.on("disconnecting", disconnecting)
-  socket.on("disconnect", updateUsers);
+  socket.on(DISCONNECTING, disconnecting)
+  socket.on(DISCONNECT, updateUsers);
 }
 
 

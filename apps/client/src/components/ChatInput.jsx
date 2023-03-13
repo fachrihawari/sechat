@@ -1,10 +1,13 @@
+import { socketEvents } from '@sechat/shared'
 import socket from "../config/socket";
+
+const { CHAT_NEW_MESSAGE } = socketEvents
 
 export default function ChatInput({ selectedUser, onSent }) {
   const handleSend = (e) => {
     e.preventDefault();
 
-    socket.emit("private-message", {
+    socket.emit(CHAT_NEW_MESSAGE, {
       to: selectedUser.id,
       content: e.target[0].value,
     });

@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
+import { socketEvents } from '@sechat/shared'
 
 import ChatBox from "../components/ChatBox";
 import ChatHeader from "../components/ChatHeader";
 import ChatInput from "../components/ChatInput";
 import OnlineUsers from "../components/OnlineUsers";
 import socket from "../config/socket";
+
+const { USER_LIST, USER_DISCONNECTED, CHAT_NEW_MESSAGE } = socketEvents
 
 function ChatPage() {
   const [users, setUsers] = useState([]);
@@ -20,7 +23,7 @@ function ChatPage() {
     }
 
     // Listen whenever new user connected or disconnected
-    socket.on("users", (onlineUsers) => {
+    socket.on(USER_LIST, (onlineUsers) => {
       const usersExceptMe = onlineUsers.filter(
         (onlineUser) => onlineUser.username !== socket.auth.username
       );
@@ -34,7 +37,7 @@ function ChatPage() {
   }, []);
 
   useEffect(() => {
-    socket.on("private-message", ({ content, from }) => {
+    socket.on(CHAT_NEW_MESSAGE, ({ content, from }) => {
       // Add new message to the user
       setMessagesById((current) => {
         const newMessage = {
@@ -68,7 +71,7 @@ function ChatPage() {
       }
     });
 
-    socket.on("user-disconnected", (id) => {
+    socket.on(USER_DISCONNECTED, (id) => {
       if (selectedUser?.id === id) {
         setSelectedUser(null);
         alert("User disconnected " + selectedUser.username);
@@ -77,7 +80,8 @@ function ChatPage() {
 
     return () => {
       // Remove listener to avoiding memory leak
-      socket.removeListener("private-message");
+      socket.removeListener(CHAT_NEW_MESSAGE);
+      socket.removeListener(USER_LIST);
     };
   }, [selectedUser]);
 
