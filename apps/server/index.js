@@ -28,7 +28,12 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017/sechat"
 const serverPort = process.env.PORT || 3000
 mongoose.connect(mongoUrl)
   .then(() => {
+    console.log("DB connected...")
+
     httpServer.listen(serverPort)
+      .addListener("listening", () => {
+        console.log("Server running at " + serverPort)
+      })
       .addListener('error', (err) => {
         console.log("Something wrong with the server!")
         console.log(err) // TODO: integrate sentry or morgan logger
