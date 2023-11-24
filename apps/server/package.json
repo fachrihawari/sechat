@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "bun run index.js",
+    "dev": "bun run --watch index.js"
   },
   "keywords": [],
   "author": "Fachri Hawari<fachri.hawari@gmail.com>",
