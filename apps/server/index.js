@@ -1,5 +1,6 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
+import { instrument } from '@socket.io/admin-ui'
 import mongoose from "mongoose";
 
 import auth from './middlewares/auth.js'
@@ -22,6 +23,13 @@ function onConnection(socket) {
   connectionHandler({ io, socket })
 }
 io.on("connection", onConnection);
+
+// Attach socket.io admin
+instrument(io, {
+  auth: false,
+  readonly: true,
+  mode: process.env.NODE_ENV || "development",
+});
 
 // Listen the server
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017/sechat"

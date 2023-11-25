@@ -11,10 +11,11 @@
   "author": "Fachri Hawari<fachri.hawari@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@sechat/shared": "workspace:@sechat/shared",
+    "@socket.io/admin-ui": "^0.5.1",
     "cors": "^2.8.5",
     "mongoose": "^7.0.1",
     "nodemon": "^2.0.21",
-    "socket.io": "^4.6.1",
-    "@sechat/shared": "workspace:@sechat/shared"
+    "socket.io": "^4.6.1"
   }
 }
