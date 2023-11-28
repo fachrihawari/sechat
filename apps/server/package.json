@@ -14,8 +14,11 @@
     "@sechat/shared": "workspace:@sechat/shared",
     "@socket.io/admin-ui": "^0.5.1",
     "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.0.1",
     "nodemon": "^2.0.21",
+    "resend": "^2.0.0",
     "socket.io": "^4.6.1"
   }
 }

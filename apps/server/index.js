@@ -1,53 +1,41 @@
+import express from "express";
 import { createServer } from "http";
-import { Server } from "socket.io";
-import { instrument } from '@socket.io/admin-ui'
 import mongoose from "mongoose";
+import { Server } from "socket.io";
 
-import auth from './middlewares/auth.js'
-import cors from './config/cors.js'
-import chatHandler from './handlers/chat.js'
-import connectionHandler from './handlers/connection.js'
+import handlers from "./handlers"
+import routes from './routes'
+import corsConfig from './config/cors.js'
 
-// Init http server
-const httpServer = createServer()
+// Init http & socket server
+const app = express();
+const httpServer = createServer(app)
+const io = new Server(httpServer, { cors: corsConfig });
 
-// Init socket.io server
-const io = new Server(httpServer, { cors });
+// Mount socket handlers
+handlers(io)
 
-// Use middlewares
-io.use(auth);
-
-// Register all handlers
-function onConnection(socket) {
-  chatHandler({ io, socket })
-  connectionHandler({ io, socket })
-}
-io.on("connection", onConnection);
-
-// Attach socket.io admin
-instrument(io, {
-  auth: false,
-  readonly: true,
-  mode: process.env.NODE_ENV || "development",
-});
+// Mount http routes
+app.use(routes)
 
 // Listen the server
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017/sechat"
 const serverPort = process.env.PORT || 3000
+
 mongoose.connect(mongoUrl)
   .then(() => {
-    console.log("DB connected...")
+    console.log("DB connected")
 
     httpServer.listen(serverPort)
       .addListener("listening", () => {
-        console.log("Server running at " + serverPort)
+        console.log(`Server running at ${serverPort}`)
       })
       .addListener('error', (err) => {
-        console.log("Something wrong with the server!")
+        console.log("Something wrong with the server")
         console.log(err) // TODO: integrate sentry or morgan logger
       })
   })
   .catch(err => {
-    console.log("Something wrong with the DB!")
+    console.log("Something wrong with the DB")
     console.log(err) // TODO: integrate sentry or morgan logger
   })

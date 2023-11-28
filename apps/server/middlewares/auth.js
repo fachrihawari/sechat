@@ -1,10 +1,26 @@
-function authMiddleware(socket, next) {
-  const username = socket.handshake.auth.username;
-  if (!username) {
-    return next(new Error("invalid username"));
+import User from '../models/user'
+import { verifyAccessToken } from '../helpers/jwt'
+
+async function authMiddleware(socket, next) {
+  try {
+    const accessToken = socket.handshake.auth.accessToken;
+    if (!accessToken) {
+      throw new Error("Invalid Token")
+    }
+  
+    const { id } = verifyAccessToken(accessToken);
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      throw new Error("Invalid Token")
+    }
+  
+    socket.user = user;
+    next();
+  } catch (error) {
+    next(error)
   }
-  socket.username = username;
-  next();
 }
 
 export default authMiddleware

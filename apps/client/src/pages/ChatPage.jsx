@@ -17,8 +17,8 @@ function ChatPage() {
 
   useEffect(() => {
     // Reconnect if user reload the browser
-    if (localStorage.getItem("username")) {
-      socket.auth = { username: localStorage.getItem("username") };
+    if (localStorage.getItem("accessToken")) {
+      socket.auth = { accessToken: localStorage.getItem("accessToken") };
       socket.connect();
     }
 
@@ -32,7 +32,7 @@ function ChatPage() {
 
     return () => {
       // Remove listener to avoiding memory leak
-      socket.removeListener("users");
+      socket.removeListener(USER_LIST);
     };
   }, []);
 
