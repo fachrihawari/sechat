@@ -17,11 +17,14 @@ function OtpPage() {
     e.preventDefault();
 
     try {
-      const { data: { accessToken } } = await verify.mutateAsync({
+      const { data: { accessToken, user } } = await verify.mutateAsync({
         email: searchParams.get('email'),
         otp
       })
       localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('_id', user._id)
+      localStorage.setItem('username', user.username)
+      localStorage.setItem('email', user.email)
       navigate('/')
       toast.success("Welcome to sechat")
     } catch (error) {

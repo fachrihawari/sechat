@@ -9,7 +9,7 @@ function connectionHandler({ io, socket }) {
     for (let [id, socketItem] of io.of("/").sockets) {
       users.push({
         id,
-        username: socketItem.username,
+        user: socketItem.user
       });
     }
     // Send new online ids

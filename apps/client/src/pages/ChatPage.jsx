@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { socketEvents } from '@sechat/shared'
+import { useNavigate } from 'react-router-dom'
 
 import ChatBox from "../components/ChatBox";
 import ChatHeader from "../components/ChatHeader";
@@ -10,6 +11,7 @@ import socket from "../config/socket";
 const { USER_LIST, USER_DISCONNECTED, CHAT_NEW_MESSAGE } = socketEvents
 
 function ChatPage() {
+  const navigate = useNavigate()
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [unreadById, setUnreadById] = useState({});
@@ -18,14 +20,21 @@ function ChatPage() {
   useEffect(() => {
     // Reconnect if user reload the browser
     if (localStorage.getItem("accessToken")) {
-      socket.auth = { accessToken: localStorage.getItem("accessToken") };
+      socket.auth = {
+        accessToken: localStorage.getItem("accessToken"),
+        user: {
+          username: localStorage.getItem("username"),
+          email: localStorage.getItem("email"),
+          _id: localStorage.getItem("_id"),
+        }
+      };
       socket.connect();
     }
 
     // Listen whenever new user connected or disconnected
     socket.on(USER_LIST, (onlineUsers) => {
       const usersExceptMe = onlineUsers.filter(
-        (onlineUser) => onlineUser.username !== socket.auth.username
+        (onlineUser) => onlineUser.user._id !== socket.auth.user._id
       );
       setUsers(usersExceptMe);
     });
@@ -92,6 +101,12 @@ function ChatPage() {
     });
   }, []);
 
+  const onLogoutClick = useCallback(() => {
+    localStorage.clear()
+    socket.disconnect()
+    navigate('/login')
+  }, []);
+
   const handleMessageSent = useCallback(({ to, content }) => {
     setMessagesById((current) => {
       const newMessage = {
@@ -124,6 +139,7 @@ function ChatPage() {
         unreadById={unreadById}
         selectedUser={selectedUser}
         onUserClick={onUserClick}
+        onLogoutClick={onLogoutClick}
       />
       {selectedUser ? (
         <div className="flex flex-1 flex-col">

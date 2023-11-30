@@ -59,7 +59,7 @@ export default class AuthController {
       const accessToken = generateAccessToken({ id: user._id })
 
       // Send the JWT token to the user
-      res.json({ accessToken })
+      res.json({ accessToken, user })
 
       // Remove the OTP from the user's document
       user.otp = undefined

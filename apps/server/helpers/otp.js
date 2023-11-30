@@ -8,6 +8,10 @@ export function generateOtp() {
     // Pad the OTP with leading zeros if necessary
     const paddedOtp = otp.toString().padStart(otpLength, '0');
 
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`Generated OTP: ${paddedOtp}`);
+    }
+
     // Return the OTP
     return paddedOtp;
 }

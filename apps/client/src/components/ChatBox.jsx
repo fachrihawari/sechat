@@ -14,7 +14,7 @@ export default function ChatBox({ messages }) {
 }
 
 function ChatItem(props) {
-  const { fromSelf, fromId, content } = props;
+  const { fromSelf, content } = props;
 
   return (
     <div className="chat-message">
@@ -44,7 +44,7 @@ function ChatItem(props) {
           }`}
         >
           <span className="font-medium">
-            {initialName("selectedUser.username")}
+            {initialName(selectedUser.username)}
           </span>
         </div>
       </div>
