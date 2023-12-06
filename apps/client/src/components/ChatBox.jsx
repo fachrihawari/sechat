@@ -14,20 +14,20 @@ export default function ChatBox({ messages }) {
 }
 
 function ChatItem(props) {
-  const { fromSelf, content } = props;
+  const { fromMe, content } = props;
 
   return (
     <div className="chat-message">
-      <div className={`flex items-end ${fromSelf ? "justify-end" : ""}`}>
+      <div className={`flex items-end ${fromMe ? "justify-end" : ""}`}>
         <div
           className={`flex flex-col space-y-2 text-sm max-w-xs sm:max-w-xl mx-2 ${
-            fromSelf ? "order-1 items-end" : "order-2 items-start"
+            fromMe ? "order-1 items-end" : "order-2 items-start"
           }`}
         >
           <div>
             <span
               className={`px-4 py-2 rounded-lg inline-block ${
-                fromSelf
+                fromMe
                   ? "rounded-br-none bg-blue-600 text-white"
                   : "rounded-bl-none bg-gray-300 text-gray-600"
               }`}
@@ -38,13 +38,13 @@ function ChatItem(props) {
         </div>
         <div
           className={`relative inline-flex items-center justify-center w-6 h-6 sm:w-12 sm:h-12 overflow-hidden rounded-full ${
-            fromSelf
+            fromMe
               ? "order-2 text-white bg-blue-600"
               : "order-1 text-white bg-gray-600"
           }`}
         >
           <span className="font-medium">
-            {initialName(selectedUser.username)}
+            {initialName}
           </span>
         </div>
       </div>

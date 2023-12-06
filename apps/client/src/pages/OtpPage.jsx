@@ -10,7 +10,7 @@ function OtpPage() {
   const [searchParams] = useSearchParams()
 
   const verify = useMutation({
-    mutationFn: (body) => http.post("/verify", body),
+    mutationFn: (body) => http.post("/auth/verify", body),
   })
 
   const handleVerify = async (e) => {

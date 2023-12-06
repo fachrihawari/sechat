@@ -1,13 +1,13 @@
 import User from '../models/user'
 import { verifyAccessToken } from '../helpers/jwt'
 
-async function authMiddleware(socket, next) {
+export async function authMiddlewareSocket(socket, next) {
   try {
     const accessToken = socket.handshake.auth.accessToken;
     if (!accessToken) {
       throw new Error("Invalid Token")
     }
-  
+
     const { id } = verifyAccessToken(accessToken);
 
     const user = await User.findById(id);
@@ -15,7 +15,7 @@ async function authMiddleware(socket, next) {
     if (!user) {
       throw new Error("Invalid Token")
     }
-  
+
     socket.user = user;
     next();
   } catch (error) {
@@ -23,4 +23,29 @@ async function authMiddleware(socket, next) {
   }
 }
 
-export default authMiddleware
+export async function authMiddlewareExpress(req, _res, next) {
+  try {
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+      throw new Error("Invalid Token")
+    }
+
+    const [type, accessToken] = authorization.split(" ");
+    if (type !== "Bearer") {
+      throw new Error("Invalid Token")
+    }
+
+    const { id } = verifyAccessToken(accessToken);
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      throw new Error("Invalid Token")
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    next(error)
+  }
+}

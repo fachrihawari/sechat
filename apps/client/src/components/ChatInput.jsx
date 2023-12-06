@@ -6,15 +6,19 @@ const { CHAT_NEW_MESSAGE } = socketEvents
 export default function ChatInput({ selectedUser, onSent }) {
   const handleSend = (e) => {
     e.preventDefault();
-
+    console.log(selectedUser)
     socket.emit(CHAT_NEW_MESSAGE, {
-      to: selectedUser.id,
+      receiver: selectedUser.socketId,
       content: e.target[0].value,
     });
     onSent({
-      to: selectedUser.id,
+      receiverSocketId: selectedUser.socketId,
+      receiverUserId: selectedUser._id,
+      senderUserId: socket.auth.user._id,
+      senderSocketId: socket.auth.id,
       content: e.target[0].value,
-    });
+      fromMe: true
+    })
     e.target.reset();
   };
 

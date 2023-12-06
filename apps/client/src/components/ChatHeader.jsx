@@ -14,7 +14,7 @@ export default function ChatHeader({ selectedUser }) {
           <div className="text-xl font-medium mt-1 flex items-center">
             <span className="text-gray-700 mr-3">{selectedUser.username}</span>
           </div>
-          <span className="text-gray-600">{selectedUser.id}</span>
+          <span className="text-gray-600">{selectedUser._id}</span>
         </div>
       </div>
     </div>

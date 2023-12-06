@@ -1,12 +1,12 @@
 import { instrument } from '@socket.io/admin-ui'
 
-import authMiddleware from '../middlewares/auth.js'
+import { authMiddlewareSocket } from '../middlewares/auth.js'
 import chatHandler from './chat.js'
 import connectionHandler from './connection.js'
 
 export default function handlers(io) {
   // Use middlewares
-  io.use(authMiddleware);
+  io.use(authMiddlewareSocket);
 
   // Register all handlers
   function onConnection(socket) {

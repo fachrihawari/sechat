@@ -8,7 +8,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
 
   const login = useMutation({
-    mutationFn: (body) => http.post("/login", body),
+    mutationFn: (body) => http.post("/auth/login", body),
   })
 
   const handleLogin = async (e) => {

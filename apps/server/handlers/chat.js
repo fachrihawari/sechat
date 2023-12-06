@@ -1,13 +1,27 @@
 import { socketEvents } from '@sechat/shared'
+import Chat from '../models/chat'
 
 const { CHAT_NEW_MESSAGE } = socketEvents
 
-function chatHandler({ socket }) {
+function chatHandler({ socket, io }) {
   // List of handlers
-  function newMessage({ content, to }) {
-    socket.to(to).emit(CHAT_NEW_MESSAGE, {
+  async function newMessage({ content, receiver }) {
+    const receiverSocketId = receiver
+    console.log("receiverSocketId", receiverSocketId)
+    const receiverUserId = io.of("/").sockets.get(receiver).user._id
+    console.log("receiverUserId", receiverUserId)
+
+    await Chat.create({
+      message: content,
+      sender: socket.user._id,
+      receiver: receiverUserId,
+    });
+    socket.to(receiver).emit(CHAT_NEW_MESSAGE, {
       content,
-      from: socket.id,
+      senderSocketId: socket.id,
+      senderUserId: socket.user._id,
+      receiverSocketId,
+      receiverUserId
     });
   }
 
