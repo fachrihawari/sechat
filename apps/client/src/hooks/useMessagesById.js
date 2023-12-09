@@ -19,7 +19,7 @@ export default function useMessages({ selectedUser }) {
         const cloned = structuredClone(current);
 
         // Get messages by user id
-        let messages = cloned[message.senderUserId];
+        let messages = cloned[message.sender._id];
         if (Array.isArray(messages)) {
           messages.push(newMessage);
         } else {
@@ -27,16 +27,16 @@ export default function useMessages({ selectedUser }) {
         }
 
         // Set new messages array to cloned
-        cloned[message.senderUserId] = messages;
+        cloned[message.sender._id] = messages;
 
         return cloned;
       });
 
       // Set unread to the user and only set if not selected user
-      if (selectedUser?._id !== message.senderUserId) {
+      if (selectedUser?._id !== message.sender._id) {
         setUnreadById((current) => ({
           ...current,
-          [message.senderUserId]: true,
+          [message.sender._id]: true,
         }));
       }
     });

@@ -1,27 +1,38 @@
-import { socketEvents } from '@sechat/shared'
+import { socketEvents } from "@sechat/shared";
+import { useMutation } from "@tanstack/react-query";
 import socket from "../config/socket";
+import http from "../config/http";
 
 const { CHAT_NEW_MESSAGE } = socketEvents
 
 export default function ChatInput({ selectedUser, onSent }) {
-  const handleSend = (e) => {
+  const createChat = useMutation({
+    mutationFn: (body) => http.post(`/users/${selectedUser?._id}/chats`, body),
+  });
+
+  const handleSend = async (e) => {
     e.preventDefault();
-    socket.emit(CHAT_NEW_MESSAGE, {
-      receiver: selectedUser.socketId,
-      message: e.target[0].value,
-    });
-    onSent({
-      receiverSocketId: selectedUser.socketId,
-      receiverUserId: selectedUser._id,
-      senderUserId: socket.auth.user._id,
-      senderSocketId: socket.auth.id,
-      sender: {
-        _id: socket.auth.user._id
-      },
-      message: e.target[0].value,
-      fromMe: true
-    })
-    e.target.reset();
+    try {
+      await createChat.mutateAsync({
+        message: e.target[0].value,
+      });
+      socket.emit(CHAT_NEW_MESSAGE, {
+        receiver: selectedUser.socketId,
+        message: e.target[0].value,
+      });
+      onSent({
+        sender: {
+          _id: socket.auth.user._id,
+        },
+        receiver: {
+          _id: selectedUser._id,
+        },
+        message: e.target[0].value
+      });
+      e.target.reset();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

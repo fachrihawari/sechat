@@ -75,7 +75,7 @@ function ChatPage() {
       const cloned = structuredClone(current);
 
       // Get messages by user id
-      let messages = cloned[newMessage.receiverUserId];
+      let messages = cloned[newMessage.receiver._id];
       if (Array.isArray(messages)) {
         messages.push(newMessage);
       } else {
@@ -83,7 +83,7 @@ function ChatPage() {
       }
 
       // Set new messages array to cloned
-      cloned[newMessage.receiverUserId] = messages;
+      cloned[newMessage.receiver._id] = messages;
 
       return cloned;
     });

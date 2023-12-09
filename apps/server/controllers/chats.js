@@ -14,7 +14,21 @@ export default class ChatsController {
       }).populate('sender receiver')
       res.json(chats)
     } catch (error) {
-      console.log(error)
+      next(error)
+    }
+  }
+  static async create(req, res, next) {
+    try {
+      const userId = req.user._id
+      const oppositeId = req.params.id
+      const { message } = req.body
+      const chat = await Chat.create({
+        message,
+        sender: userId,
+        receiver: oppositeId
+      })
+      res.json(chat)
+    } catch (error) {
       next(error)
     }
   }
