@@ -1,16 +1,20 @@
 import Chat from "../models/chat"
 
 export default class ChatsController {
-  static async all(req, res) {
+  static async all(req, res, next) {
     try {
+      const userId = req.user._id
+      const oppositeId = req.params.id
+
       const chats = await Chat.find({
         $or: [
-          { sender: req.user._id, receiver: req.params.oppositeUserId },
-          { receiver: req.user._id, sender: req.params.oppositeUserId },
+          { sender: userId, receiver: oppositeId },
+          { receiver: userId, sender: oppositeId },
         ]
       }).populate('sender receiver')
       res.json(chats)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }

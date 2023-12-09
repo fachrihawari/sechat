@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import http from "../config/http";
@@ -30,6 +30,25 @@ function ChatPage() {
       return data;
     },
   });
+  const { data: chats } = useQuery({
+    queryKey: ["chats", selectedUser?._id],
+    queryFn: async () => {
+      if (!selectedUser?._id) {
+        throw new Error("Please select a user")
+      }
+
+      const { data } = await http.get("/users/" + selectedUser?._id + "/chats");
+      return data;
+    }
+  })
+
+  useEffect(() => {
+    setMessagesById(current => {
+      const cloned = structuredClone(current)
+      cloned[selectedUser?._id] = chats
+      return cloned
+    })
+  }, [chats, selectedUser])
 
   const onUserClick = useCallback(
     (user) => {
@@ -89,7 +108,7 @@ function ChatPage() {
         <div className="flex flex-1 flex-col">
           <ChatHeader selectedUser={selectedUser} />
           <ChatBox
-            messages={messagesById[selectedUser?._id] ?? []}
+            chats={messagesById[selectedUser?._id] ?? []}
             selectedUser={selectedUser}
           />
           <ChatInput selectedUser={selectedUser} onSent={handleMessageSent} />

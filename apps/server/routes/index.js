@@ -2,7 +2,6 @@ import express from 'express'
 import cors from "cors";
 import authRouter from './auth'
 import usersRouter from './users'
-import chatsRouter from './chats'
 import corsConfig from '../config/cors';
 import errorHandler from '../middlewares/errorHandler';
 import { authMiddlewareExpress } from '../middlewares/auth';
@@ -30,7 +29,6 @@ router.use(authMiddlewareExpress)
 
 // Users Endpoint
 router.use('/users', usersRouter)
-router.use('/chats', chatsRouter)
 
 // Error Handler
 router.use(errorHandler)

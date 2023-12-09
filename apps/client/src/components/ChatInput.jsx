@@ -8,14 +8,17 @@ export default function ChatInput({ selectedUser, onSent }) {
     e.preventDefault();
     socket.emit(CHAT_NEW_MESSAGE, {
       receiver: selectedUser.socketId,
-      content: e.target[0].value,
+      message: e.target[0].value,
     });
     onSent({
       receiverSocketId: selectedUser.socketId,
       receiverUserId: selectedUser._id,
       senderUserId: socket.auth.user._id,
       senderSocketId: socket.auth.id,
-      content: e.target[0].value,
+      sender: {
+        _id: socket.auth.user._id
+      },
+      message: e.target[0].value,
       fromMe: true
     })
     e.target.reset();
