@@ -20,7 +20,7 @@ export default function useSocketById() {
 
     return () => {
       // Remove listener to avoiding memory leak
-      socket.removeListener(USER_LIST);
+      socket.off(USER_LIST);
     };
   }, [])
 

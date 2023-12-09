@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import { socketEvents } from '@sechat/shared'
-import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import http from '../config/http'
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import http from "../config/http";
 
 import ChatBox from "../components/ChatBox";
 import ChatHeader from "../components/ChatHeader";
@@ -10,47 +9,48 @@ import ChatInput from "../components/ChatInput";
 import ChatUsers from "../components/ChatUsers";
 import socket from "../config/socket";
 import useSocketById from "../hooks/useSocketById";
-import useMessageById from "../hooks/useMessageById";
+import useMessagesById from "../hooks/useMessagesById";
 import useSocketConnect from "../hooks/useSocketConnect";
 
 function ChatPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Connect to socket with auth
-  useSocketConnect()
+  useSocketConnect();
 
   // Map of socket by user id
-  const socketById = useSocketById()
-
+  const socketById = useSocketById();
   const [selectedUser, setSelectedUser] = useState(null);
-  const [unreadById, setUnreadById] = useState({});
-  const { messagesById, setMessagesById } = useMessageById()
+  const { messagesById, setMessagesById, unreadById, setUnreadById } =
+    useMessagesById({ selectedUser });
   const { data: users, isPending } = useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: async () => {
-      const { data } = await http.get('/users')
-      return data
+      const { data } = await http.get("/users");
+      return data;
     },
-  })
+  });
 
-  const onUserClick = useCallback((user) => {
-    console.log(user)
-    setSelectedUser({ ...user, socketId: socketById[user._id] });
-    setUnreadById({
-      [user.id]: false,
-    });
-  }, [socketById]);
+  const onUserClick = useCallback(
+    (user) => {
+      setSelectedUser({ ...user, socketId: socketById[user._id] });
+      setUnreadById({
+        [user._id]: false,
+      });
+    },
+    [socketById]
+  );
 
   const onLogoutClick = useCallback(() => {
-    localStorage.clear()
-    socket.disconnect()
-    navigate('/login')
+    localStorage.clear();
+    socket.disconnect();
+    navigate("/login");
   }, []);
 
   const handleMessageSent = useCallback((message) => {
     setMessagesById((current) => {
       const newMessage = {
-        ...message
+        ...message,
       };
       // Clone current state
       const cloned = structuredClone(current);
@@ -72,22 +72,26 @@ function ChatPage() {
 
   return (
     <div className="flex-1 flex flex-row h-screen">
-      {
-        isPending ? <h1>Loading</h1> :
-          <ChatUsers
-            me={socket}
-            users={users}
-            socketById={socketById}
-            unreadById={unreadById}
-            selectedUser={selectedUser}
-            onUserClick={onUserClick}
-            onLogoutClick={onLogoutClick}
-          />
-      }
+      {isPending ? (
+        <h1>Loading</h1>
+      ) : (
+        <ChatUsers
+          me={socket}
+          users={users}
+          socketById={socketById}
+          unreadById={unreadById}
+          selectedUser={selectedUser}
+          onUserClick={onUserClick}
+          onLogoutClick={onLogoutClick}
+        />
+      )}
       {selectedUser ? (
         <div className="flex flex-1 flex-col">
           <ChatHeader selectedUser={selectedUser} />
-          <ChatBox messages={messagesById[selectedUser?._id] ?? []} selectedUser={selectedUser} />
+          <ChatBox
+            messages={messagesById[selectedUser?._id] ?? []}
+            selectedUser={selectedUser}
+          />
           <ChatInput selectedUser={selectedUser} onSent={handleMessageSent} />
         </div>
       ) : (

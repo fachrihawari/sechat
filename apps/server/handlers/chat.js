@@ -7,9 +7,7 @@ function chatHandler({ socket, io }) {
   // List of handlers
   async function newMessage({ content, receiver }) {
     const receiverSocketId = receiver
-    console.log("receiverSocketId", receiverSocketId)
     const receiverUserId = io.of("/").sockets.get(receiver).user._id
-    console.log("receiverUserId", receiverUserId)
 
     await Chat.create({
       message: content,

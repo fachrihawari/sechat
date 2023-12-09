@@ -13,7 +13,6 @@ export default class AuthController {
 
       if (!user) {
         user = await User.create({ username: email, email })
-        console.log({ user })
       }
 
       // Generate a 6-digit OTP

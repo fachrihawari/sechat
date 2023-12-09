@@ -6,7 +6,6 @@ const { CHAT_NEW_MESSAGE } = socketEvents
 export default function ChatInput({ selectedUser, onSent }) {
   const handleSend = (e) => {
     e.preventDefault();
-    console.log(selectedUser)
     socket.emit(CHAT_NEW_MESSAGE, {
       receiver: selectedUser.socketId,
       content: e.target[0].value,

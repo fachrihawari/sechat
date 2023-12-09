@@ -5,14 +5,19 @@ export default function ChatUsers({
   unreadById,
   socketById,
   selectedUser,
-  onLogoutClick
+  onLogoutClick,
 }) {
   return (
     <div className="w-64 md:w-96 border-r-2">
       <div className="border-b-2 p-3">
         <h1 className="text-2xl">Hi {me?.auth?.user.username}</h1>
         <p className="text-sm">ID: {me?.auth?.user._id}</p>
-        <button onClick={onLogoutClick} className="mt-2 w-full bg-red-400 text-white px-4 py-2 border rounded-xl">Logout</button>
+        <button
+          onClick={onLogoutClick}
+          className="mt-2 w-full bg-red-400 text-white px-4 py-2 border rounded-xl"
+        >
+          Logout
+        </button>
       </div>
       {!users.length && (
         <span className="flex items-center px-3 h-16 border-b-2">
@@ -28,15 +33,12 @@ export default function ChatUsers({
               "bg-blue-600 text-white"
               }`}
           >
+
+            <span className={`${socketById[user._id] ? 'bg-green-800' : 'bg-gray-300'} mr-2 rounded-lg w-4 h-4`} />
             {user.username}{" "}
             {unreadById[user._id] && (
               <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300 ml-2">
-                New Messages
-              </span>
-            )}
-            {socketById[user._id] && (
-              <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300 ml-2">
-                Online
+                new
               </span>
             )}
           </li>

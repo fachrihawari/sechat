@@ -1,20 +1,25 @@
 import { initialName } from "../helpers/name";
+import socket from "../config/socket";
 
-export default function ChatBox({ messages }) {
+export default function ChatBox({ messages, selectedUser }) {
   return (
     <div
       id="messages"
       className="flex flex-col flex-1 space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
     >
-      {messages.map((message) => (
-        <ChatItem {...message} />
+      {messages.map((message, i) => (
+        <ChatItem key={i} message={message} selectedUser={selectedUser} />
       ))}
     </div>
   );
 }
 
 function ChatItem(props) {
-  const { fromMe, content } = props;
+  const { selectedUser, message } = props;
+  const { fromMe, content } = message;
+
+  const chatUser = fromMe ? socket.auth.user.username : selectedUser.username;
+  const aliasName = initialName(chatUser);
 
   return (
     <div className="chat-message">
@@ -43,9 +48,7 @@ function ChatItem(props) {
               : "order-1 text-white bg-gray-600"
           }`}
         >
-          <span className="font-medium">
-            {initialName}
-          </span>
+          <span className="font-medium">{aliasName}</span>
         </div>
       </div>
     </div>

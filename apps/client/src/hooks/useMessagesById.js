@@ -5,15 +5,16 @@ import { socketEvents } from '@sechat/shared'
 
 const { CHAT_NEW_MESSAGE } = socketEvents
 
-export default function useMessageById() {
+export default function useMessages({ selectedUser }) {
   const [messagesById, setMessagesById] = useState({});
- 
+  const [unreadById, setUnreadById] = useState({});
+
   useEffect(() => {
     socket.on(CHAT_NEW_MESSAGE, (message) => {
       // Add new message to the user
       setMessagesById((current) => {
-        const newMessage = {...message}
-        
+        const newMessage = { ...message }
+
         // Clone current state
         const cloned = structuredClone(current);
 
@@ -31,29 +32,20 @@ export default function useMessageById() {
         return cloned;
       });
 
-      // // Set unread to the user and only set if not selected user
-      // if (selectedUser?.id !== sender) {
-      //   setUnreadById((current) => ({
-      //     ...current,
-      //     [sender]: true,
-      //   }));
-      // }
+      // Set unread to the user and only set if not selected user
+      if (selectedUser?._id !== message.senderUserId) {
+        setUnreadById((current) => ({
+          ...current,
+          [message.senderUserId]: true,
+        }));
+      }
     });
-
-    // socket.on(USER_DISCONNECTED, (id) => {
-    //   if (selectedUser?.id === id) {
-    //     setSelectedUser(null);
-    //   }
-    // });
 
     return () => {
       // Remove listener to avoiding memory leak
-      socket.removeListener(CHAT_NEW_MESSAGE);
-      // socket.removeListener(USER_DISCONNECTED);
+      socket.off(CHAT_NEW_MESSAGE);
     };
-  }, [
-    // selectedUser
-  ]);
+  }, [selectedUser]);
 
-  return { messagesById, setMessagesById }
+  return { messagesById, setMessagesById, unreadById, setUnreadById }
 }
