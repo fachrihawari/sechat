@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "description": "Realtime chat with React & Socket.io",
+  "scripts": {
+    "dev-client": "cd apps/client && bun run dev",
+    "dev-server": "cd apps/server && bun run dev",
+    "dev": "concurrently -k \"npm:dev-*\""
+  },
   "workspaces": [
     "apps/server",
     "apps/client",
@@ -22,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/fachrihawari/sechat/issues"
   },
-  "homepage": "https://github.com/fachrihawari/sechat#readme"
+  "homepage": "https://github.com/fachrihawari/sechat#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
