@@ -30,7 +30,7 @@ function ChatPage() {
       return data;
     },
   });
-  const { data: chats } = useQuery({
+  const { data: chats, refetch } = useQuery({
     queryKey: ["chats", selectedUser?._id],
     queryFn: async () => {
       if (!selectedUser?._id) {
@@ -49,6 +49,19 @@ function ChatPage() {
       return cloned
     })
   }, [chats, selectedUser])
+
+  useEffect(() => {
+    refetch()
+    setSelectedUser((current) => {
+      if (current) {
+        return {
+          ...current,
+          socketId: socketById[current._id],
+        };
+      }
+      return current
+    })
+  }, [socketById]);
 
   const onUserClick = useCallback(
     (user) => {
