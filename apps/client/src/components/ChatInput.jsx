@@ -16,10 +16,14 @@ export default function ChatInput({ selectedUser, onSent }) {
       await createChat.mutateAsync({
         message: e.target[0].value,
       });
-      socket.emit(CHAT_NEW_MESSAGE, {
-        receiver: selectedUser.socketId,
-        message: e.target[0].value,
-      });
+
+      if (selectedUser.socketId) {
+        socket.emit(CHAT_NEW_MESSAGE, {
+          receiver: selectedUser.socketId,
+          message: e.target[0].value,
+        });
+      }
+      
       onSent({
         sender: {
           _id: socket.auth.user._id,

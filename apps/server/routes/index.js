@@ -8,12 +8,6 @@ import { authMiddlewareExpress } from '../middlewares/auth';
 
 const router = express.Router()
 
-// Slow down the server
-router.use(async (req, res, next) => {
-    await Bun.sleep(200)
-    next()
-})
-
 // CORS
 router.use(cors(corsConfig))
 
