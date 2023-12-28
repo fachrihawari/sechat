@@ -4,11 +4,7 @@ module.exports = {
       name   : "sechat-server",
       cwd: "./apps/server",
       script : "bun",
-      args: "run start",
-      env: {
-        PORT: 3001,
-        CLIENT_URL: "https://sechat.hawari.dev"
-      }
+      args: "run start"
     },
     {
       name   : "sechat-client",
