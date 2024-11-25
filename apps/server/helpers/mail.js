@@ -10,7 +10,7 @@ export async function sendEmail(to, subject, body) {
     }
 
     return resend.emails.send({
-        from: "sechat@hawari.dev",
+        from: process.env.EMAIL_FROM,
         to,
         subject,
         html: body

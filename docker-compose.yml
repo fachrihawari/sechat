@@ -24,6 +24,7 @@ services:
       CLIENT_URL: ${CLIENT_URL}
       RESEND_API_KEY: ${RESEND_API_KEY}
       JWT_SECRET: ${JWT_SECRET}
+      EMAIL_FROM: ${EMAIL_FROM}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.apisechat.rule=Host(`api.sechat.hawari.dev`)"
