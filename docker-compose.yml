@@ -1,0 +1,38 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: ./apps/client/Dockerfile
+    environment:
+      VITE_APP_SERVER_URL: ${VITE_APP_SERVER_URL}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sechat.rule=Host(`sechat.hawari.dev`)"
+      - "traefik.http.routers.sechat.entrypoints=websecure"
+      - "traefik.http.routers.sechat.tls.certresolver=letsencryptresolver"
+    networks:
+      - traefik-network
+
+  server:
+    build:
+      context: .
+      dockerfile: ./apps/server/Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+      MONGO_URL: ${MONGO_URL}
+      CLIENT_URL: ${CLIENT_URL}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.apisechat.rule=Host(`api.sechat.hawari.dev`)"
+      - "traefik.http.routers.apisechat.entrypoints=websecure"
+      - "traefik.http.routers.apisechat.tls.certresolver=letsencryptresolver"
+      - "traefik.http.services.apisechat.loadbalancer.server.port=${PORT}"
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
