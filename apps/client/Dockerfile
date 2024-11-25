@@ -11,14 +11,14 @@ RUN bun i
 RUN bun run --filter "@sechat/client" build
 
 # runner stage
-FROM nginx:alpine
+FROM nginx:1.27.1-alpine3.20
 WORKDIR /app
 
 # Remove the default nginx.conf to add our own
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy build & nginx conf
-COPY --from=builder /app/apps/client/dist /usr/share/nginx/html 
+COPY --from=builder /app/apps/client/dist /usr/share/nginx/html
 COPY --from=builder /app/apps/client/nginx/nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon off;"]
