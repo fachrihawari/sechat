@@ -3,13 +3,14 @@ services:
     build:
       context: .
       dockerfile: ./apps/client/Dockerfile
+      args:
+        VITE_APP_SERVER_URL: ${VITE_APP_SERVER_URL}
     environment:
       VITE_APP_SERVER_URL: ${VITE_APP_SERVER_URL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sechat.rule=Host(`sechat.hawari.dev`)"
-      - "traefik.http.routers.sechat.entrypoints=websecure"
-      - "traefik.http.routers.sechat.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.sechat.entrypoints=web"
     networks:
       - traefik-network
 
@@ -27,9 +28,8 @@ services:
       EMAIL_FROM: ${EMAIL_FROM}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.apisechat.rule=Host(`api.sechat.hawari.dev`)"
-      - "traefik.http.routers.apisechat.entrypoints=websecure"
-      - "traefik.http.routers.apisechat.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.apisechat.rule=Host(`sechat-api.hawari.dev`)"
+      - "traefik.http.routers.apisechat.entrypoints=web"
       - "traefik.http.services.apisechat.loadbalancer.server.port=${PORT}"
     networks:
       - traefik-network

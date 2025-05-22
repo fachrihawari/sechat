@@ -7,6 +7,8 @@ COPY ../../packages/shared /app/packages/shared
 COPY ../../apps/server /app/apps/server
 COPY ../../apps/client /app/apps/client
 
+ARG VITE_APP_SERVER_URL
+
 RUN bun i
 RUN bun run --filter "@sechat/client" build
 
