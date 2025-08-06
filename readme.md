@@ -36,7 +36,6 @@ sechat/
 - **Unread indicators**: Visual indicators for new messages
 
 ### User Interface
-- **Responsive design**: Mobile-friendly interface built with Tailwind CSS
 - **User selection**: Click to select users for one-on-one conversations
 - **Message bubbles**: Distinct styling for sent and received messages
 - **Auto-scroll**: Automatic scrolling to latest messages
