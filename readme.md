@@ -337,8 +337,6 @@ VITE_APP_SERVER_URL=http://localhost:3000
 
 ## Performance Considerations
 
-- **Database Indexing**: Efficient queries with proper MongoDB indexing
-- **Connection Pooling**: MongoDB connection pooling for optimal performance
 - **Static Asset Caching**: Nginx configuration for client-side caching
 - **Real-time Optimization**: Efficient Socket.io event handling
 - **Build Optimization**: Vite for optimized frontend builds
