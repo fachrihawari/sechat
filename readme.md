@@ -1,10 +1,10 @@
-# SecChat
+# sechat
 
 A real-time chat application built with React, Socket.io, and Express.js, featuring email-based authentication with OTP verification.
 
 ## Overview
 
-SecChat is a modern, real-time messaging platform that allows users to communicate instantly. The application uses email-based authentication with OTP (One-Time Password) verification for secure access, and Socket.io for real-time messaging capabilities.
+sechat is a modern, real-time messaging platform that allows users to communicate instantly. The application uses email-based authentication with OTP (One-Time Password) verification for secure access, and Socket.io for real-time messaging capabilities.
 
 ## Architecture
 

@@ -34,38 +34,57 @@ function OtpPage() {
 
 
   return (
-    <div className="flex-1 flex flex-row items-center justify-center bg-gray-200 h-screen">
-      <div className="w-full max-w-xs">
-        <form
-          onSubmit={handleVerify}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        >
-          <h1 className="text-2xl text-center">Verify</h1>
-          <input
-            name='email'
-            defaultValue={searchParams.get('email')}
-            disabled
-            type="email"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-4 text-center"
-            placeholder="Your email..."
-            required
-          />
-          <input
-            name='otp'
-            value={otp}
-            disabled={verify.isPending}
-            onChange={e => setOtp(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4 text-center"
-            placeholder="OTP Code..."
-            required
-          />
-          <button
-            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            {verify.isPending ? 'Loading...' : 'Verify'}
-          </button>
-        </form>
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 py-8 px-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-xl p-8 flex flex-col items-center border border-blue-100">
+          <div className="mb-6 flex flex-col items-center">
+            <div className="w-14 h-14 rounded-lg bg-blue-600 flex items-center justify-center mb-2">
+              <span className="text-white text-2xl font-bold">S</span>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-800 tracking-tight">OTP Verification</h1>
+            <span className="text-gray-400 text-sm mt-1">Enter the code sent to your email</span>
+          </div>
+          <form onSubmit={handleVerify} className="w-full flex flex-col gap-3">
+            <label htmlFor="email" className="text-gray-700 font-medium">Email Address</label>
+            <input
+              id="email"
+              name="email"
+              defaultValue={searchParams.get('email')}
+              disabled
+              type="email"
+              className="border border-blue-200 rounded-md px-4 py-3 text-gray-700 bg-blue-50 placeholder-gray-400 text-center focus:outline-none focus:border-blue-400"
+              placeholder="Your email..."
+              required
+            />
+            <label htmlFor="otp" className="text-gray-700 font-medium">OTP Code</label>
+            <input
+              id="otp"
+              name="otp"
+              value={otp}
+              disabled={verify.isPending}
+              onChange={e => setOtp(e.target.value)}
+              className="border border-blue-200 rounded-md px-4 py-3 text-gray-700 bg-blue-50 placeholder-gray-400 text-center focus:outline-none focus:border-blue-400"
+              placeholder="Enter 6-digit code"
+              required
+              inputMode="numeric"
+              pattern="[0-9]{6}"
+              maxLength={6}
+            />
+            <button
+              className="mt-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-md focus:outline-none focus:ring-0 border-0 transition"
+              type="submit"
+              disabled={verify.isPending}
+              style={{ boxShadow: 'none' }}
+            >
+              {verify.isPending ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+                  Loading...
+                </span>
+              ) : 'Verify'}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

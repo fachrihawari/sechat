@@ -105,7 +105,9 @@ function ChatPage() {
   return (
     <div className="flex-1 flex flex-row h-screen">
       {isPending ? (
-        <h1>Loading</h1>
+        <div className="flex flex-1 items-center justify-center">
+          <span className="text-lg text-gray-400">Loading...</span>
+        </div>
       ) : (
         <ChatUsers
           me={socket}
@@ -127,8 +129,9 @@ function ChatPage() {
           <ChatInput selectedUser={selectedUser} onSent={handleMessageSent} />
         </div>
       ) : (
-        <div className="flex flex-1 items-center justify-center">
-          <span className="text-4xl">Choose a user to start chat!</span>
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <span className="text-xl text-gray-800 font-semibold">Select a user to start chatting</span>
+          <span className="text-sm text-gray-500 mt-2">Your conversations will appear here</span>
         </div>
       )}
     </div>

@@ -40,12 +40,20 @@ export default function ChatInput({ selectedUser, onSent }) {
   };
 
   return (
-    <form onSubmit={handleSend} className="border-t-2 border-gray-200 p-4">
+    <form onSubmit={handleSend} className="border-t border-blue-100 bg-white p-4 flex items-center gap-2">
       <input
         type="text"
-        placeholder="Write your message!"
-        className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 bg-gray-200 rounded-md p-3"
+        placeholder="Write your message..."
+        className="flex-1 border border-blue-200 rounded-md px-4 h-12 text-gray-800 bg-blue-50 placeholder-gray-400 focus:outline-none focus:border-blue-400 transition text-base"
+        autoComplete="off"
       />
+      <button
+        type="submit"
+        className="ml-2 bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 h-12 rounded-md focus:outline-none focus:ring-0 border-0 transition text-base flex items-center justify-center"
+        style={{ boxShadow: 'none' }}
+      >
+        Send
+      </button>
     </form>
   );
 }
