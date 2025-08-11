@@ -104,11 +104,7 @@ function ChatPage() {
 
   return (
     <div className="flex-1 flex flex-row h-screen">
-      {isPending ? (
-        <div className="flex flex-1 items-center justify-center">
-          <span className="text-lg text-gray-400">Loading...</span>
-        </div>
-      ) : (
+      {!isPending && (
         <ChatUsers
           me={socket}
           users={users}
