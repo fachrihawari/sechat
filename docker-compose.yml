@@ -7,12 +7,6 @@ services:
         VITE_APP_SERVER_URL: ${VITE_APP_SERVER_URL}
     environment:
       VITE_APP_SERVER_URL: ${VITE_APP_SERVER_URL}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sechat.rule=Host(`sechat.hawari.dev`)"
-      - "traefik.http.routers.sechat.entrypoints=web"
-    networks:
-      - traefik-network
 
   server:
     build:
@@ -26,14 +20,4 @@ services:
       RESEND_API_KEY: ${RESEND_API_KEY}
       JWT_SECRET: ${JWT_SECRET}
       EMAIL_FROM: ${EMAIL_FROM}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.apisechat.rule=Host(`sechat-api.hawari.dev`)"
-      - "traefik.http.routers.apisechat.entrypoints=web"
-      - "traefik.http.services.apisechat.loadbalancer.server.port=${PORT}"
-    networks:
-      - traefik-network
-
-networks:
-  traefik-network:
-    external: true
+  
